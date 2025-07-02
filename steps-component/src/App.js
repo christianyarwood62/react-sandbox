@@ -1,0 +1,16 @@
+export default function App() {
+  return <div className="steps">
+    <div className="numbers">
+      <div className="number">1</div>
+      <div className='number'>2</div>
+      <div className='number'>3</div>
+    </div>
+
+    <p className="message">Hello</p>
+
+    <div className="buttons">
+      <button>Previous</button>
+      <button>Next</button>
+    </div>
+  </div>
+}
