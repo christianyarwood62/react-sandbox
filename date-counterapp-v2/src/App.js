@@ -59,6 +59,13 @@ function Counter() {
     setDate(newDate);
   }
   
+  function handleReset() {
+    setCount(0);
+    setStep(1);
+    const newDate = new Date();
+    setDate(newDate);
+  }
+  
   return <div>
     <div>
       <input type='range' min='0' max='10' value={step} onChange={handleStep}></input>
@@ -75,6 +82,10 @@ function Counter() {
       <button onClick={addCount}>+</button>
     </div>
     <div>{count} days from today is {date.toDateString()}</div>
+
+    {(count !== 0 || step !== 1) ? <div>
+      <button onClick={handleReset}>Reset</button>
+    </div> : null}
   </div>
 }
 export default App;
