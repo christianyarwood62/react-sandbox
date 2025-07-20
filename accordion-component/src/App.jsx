@@ -1,4 +1,5 @@
 import "./styles.css";
+import { useState } from "react";
 
 const faqs = [
   {
@@ -21,11 +22,29 @@ const faqs = [
 export default function App() {
   return (
     <div>
-      <Accordion />
+      <Accordion data={faqs}/>
     </div>
   );
 }
 
-function Accordion() {
-  return <div>TODO</div>;
+function Accordion({data}) {
+  return <div className="accordion">
+    {faqs.map((faq, i) => 
+      (<AccordionItem title={faq.title} text={faq.text} number={i} key={faq.title}></AccordionItem>))}
+  </div>;
+}
+
+function AccordionItem({number, title, text}) {
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  function handleToggle() {
+    setIsOpen((isOpen) => !isOpen);
+  }
+  return <div className={`item ${isOpen ? 'open' : ''}`} onClick={handleToggle}>
+    <p className="number">{number < 9 ? `0${number+1}` : number + 1}</p>
+    <p className="title">{title}</p>
+    <p className="icon">{isOpen ? '-' : '+'}</p>
+   {isOpen && <p className="content-box">{text}</p>}
+  </div>
 }
