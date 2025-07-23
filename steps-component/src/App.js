@@ -40,22 +40,33 @@ export default function App() {
           <p className="message">Step {step}: {messages[step - 1]}</p>
 
           <div className="buttons">
-            <button 
-              style={{backgroundColor:'purple', color:'white'}}
-              onClick = {handlePrevious}
-            >
-              Previous
-            </button>
-            <button 
-              style={{backgroundColor:'purple', color:'white'}}
-              onClick = {handleNext}
-            >
-              Next
-            </button>
+            <Button 
+              bgColor='purple' 
+              textColor='white' 
+              onClick={handlePrevious}>
+                <span>👈</span> Previous 
+            </Button>
+            <Button 
+              bgColor='purple' 
+              textColor='white' 
+              onClick={handleNext} >
+                Next <span>👉</span>
+            </Button>
           </div>
         </div>
         )
         }
   </div>
+  )
+}
+
+function Button({textColor, bgColor, onClick, children}) {
+  return (
+    <button 
+      style={{backgroundColor: bgColor, color: textColor}}
+      onClick = {onClick}
+    >
+      {children}
+    </button>
   )
 }
