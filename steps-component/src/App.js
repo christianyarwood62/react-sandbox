@@ -7,6 +7,14 @@ const messages = [
 ];
 
 export default function App() {
+  return (
+    <div>
+      <Steps />
+    </div>
+  )
+}
+
+function Steps() {
   const [step, setStep] = useState(1);
   const [isOpen, setIsOpen] = useState(true);
 
@@ -37,7 +45,18 @@ export default function App() {
             <div className={step >= 3 ? 'active' : ''}>3</div>
           </div>
 
-          <p className="message">Step {step}: {messages[step - 1]}</p>
+          <StepMessage step={step}>
+            {messages[step - 1]}
+            <div className="buttons">
+              <Button
+                bgColor='grey'
+                textColor='white'
+                onClick={() => alert('This uses a react component for a button')}
+              >
+                Learn more about components
+              </Button>
+            </div>
+          </StepMessage>
 
           <div className="buttons">
             <Button 
@@ -60,9 +79,19 @@ export default function App() {
   )
 }
 
+function StepMessage({step, children}) {
+  return (
+    <div className="message">
+      <h3>Step {step}</h3>
+      {children}
+    </div>
+  )
+}
+
 function Button({textColor, bgColor, onClick, children}) {
   return (
-    <button 
+    <button
+      className="buttons"
       style={{backgroundColor: bgColor, color: textColor}}
       onClick = {onClick}
     >
