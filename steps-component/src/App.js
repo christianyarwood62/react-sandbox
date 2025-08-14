@@ -50,7 +50,7 @@ function Steps() {
             <div className="buttons">
               <Button
                 bgColor='grey'
-                textColor='white'
+                textColor='black'
                 onClick={() => alert('This uses a react component for a button')}
               >
                 Learn more about components
