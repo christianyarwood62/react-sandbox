@@ -32,7 +32,7 @@ export default function App() {
           if (firstCurrency === secondCurrency || !input) return;
 
           console.log(conversions);
-          setOutput(conversions.rates[`${secondCurrency}`]);
+          setOutput(conversions.rates[secondCurrency]);
         } catch (err) {
           if (err.name !== "AbortError") {
             console.log(err.message);
@@ -60,10 +60,16 @@ export default function App() {
 
   return (
     <div>
-      <input type="text" onChange={(e) => handleInput(e)} />
+      <input
+        type="text"
+        value={input} // This is good to put so it makes it a controlled element
+        onChange={(e) => handleInput(e)}
+        disabled={isLoading}
+      />
       <select
-        defaultValue={firstCurrency}
+        value={firstCurrency}
         onChange={(e) => setFirstCurrency(e.target.value)}
+        disabled={isLoading}
       >
         <option value="USD">USD</option>
         <option value="EUR">EUR</option>
@@ -71,8 +77,9 @@ export default function App() {
         <option value="INR">INR</option>
       </select>
       <select
-        defaultValue={secondCurrency}
+        value={secondCurrency}
         onChange={(e) => setSecondCurrency(e.target.value)}
+        disabled={isLoading}
       >
         <option value="USD">USD</option>
         <option value="EUR">EUR</option>
