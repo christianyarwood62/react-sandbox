@@ -8,6 +8,7 @@ export default function App() {
   const [firstCurrency, setFirstCurrency] = useState("INR");
   const [secondCurrency, setSecondCurrency] = useState("CAD");
   const [output, setOutput] = useState("No conversion yet");
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleInput(e) {
     setInput(Number(e.target.value));
@@ -15,18 +16,37 @@ export default function App() {
 
   useEffect(
     function () {
+      const controller = new AbortController();
+
       async function fetchCurrencyConversions() {
-        const res = await fetch(
-          `https://api.frankfurter.app/latest?amount=${input}&from=${firstCurrency}&to=${secondCurrency}`
-        );
+        try {
+          if (firstCurrency === secondCurrency || !input) return; // Stops the fetch request if inputs arent selected
+          setIsLoading(true);
+          const res = await fetch(
+            `https://api.frankfurter.app/latest?amount=${input}&from=${firstCurrency}&to=${secondCurrency}`,
+            { signal: controller.signal }
+          );
 
-        const conversions = await res.json();
-        if (firstCurrency === secondCurrency || !input) return;
+          if (!res.ok) throw new Error("Error fetching data");
+          const conversions = await res.json();
+          if (firstCurrency === secondCurrency || !input) return;
 
-        console.log(conversions);
+          console.log(conversions);
+          setOutput(conversions.rates[`${secondCurrency}`]);
+        } catch (err) {
+          if (err.name !== "AbortError") {
+            console.log(err.message);
+          }
+        } finally {
+          setIsLoading(false);
+        }
       }
 
       fetchCurrencyConversions();
+
+      return function () {
+        controller.abort();
+      };
     },
     [input, firstCurrency, secondCurrency]
   );
@@ -59,7 +79,13 @@ export default function App() {
         <option value="CAD">CAD</option>
         <option value="INR">INR</option>
       </select>
-      <p>{(firstCurrency === secondCurrency || !input) && displayMessage}</p>
+      <p>
+        {firstCurrency === secondCurrency || !input
+          ? displayMessage
+          : isLoading
+          ? "Loading"
+          : output}
+      </p>
     </div>
   );
 }
